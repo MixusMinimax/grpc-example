@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package user;
+
+import "core.proto";
+
+option csharp_namespace = "Proto.User";
+
+message User {
+  string id = 1;
+  string username = 2;
+  HumanName name = 3;
+}

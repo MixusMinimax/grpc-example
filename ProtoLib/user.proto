@@ -2,12 +2,45 @@ syntax = "proto3";
 
 package user;
 
+import "google/protobuf/timestamp.proto";
 import "core.proto";
 
 option csharp_namespace = "Proto.User";
+
+// ====== ~~~~~~ ====== ~~~~~~ ======
+// ====== [    DATA TYPES    ] ======
+// ====== ~~~~~~ ====== ~~~~~~ ======
 
 message User {
   string id = 1;
   string username = 2;
   HumanName name = 3;
+}
+
+// ====== ~~~~~~ ====== ~~~~~~ ======
+// ====== [     REQUESTS     ] ======
+// ====== ~~~~~~ ====== ~~~~~~ ======
+
+message SignInRequest {
+  string username = 1;
+  string password = 2;
+}
+message SignInResponse {
+  string jwt = 1;
+}
+
+message GetCurrentUserRequest {
+}
+message GetCurrentUserResponse {
+  User user = 1;
+  google.protobuf.Timestamp logged_in_at = 2;
+}
+
+// ====== ~~~~~~ ====== ~~~~~~ ======
+// ====== [     SERVICES     ] ======
+// ====== ~~~~~~ ====== ~~~~~~ ======
+
+service UserService {
+  rpc SignIn(SignInRequest) returns (SignInRequest);
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
 }

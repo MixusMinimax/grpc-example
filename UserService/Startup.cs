@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -23,6 +25,26 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapGet("/", async context =>
+            {
+                var endpointDataSource = context
+                    .RequestServices.GetRequiredService<EndpointDataSource>();
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    results = endpointDataSource
+                        .Endpoints
+                        .OfType<RouteEndpoint>()
+                        .Where(e => e.DisplayName?.StartsWith("gRPC") == true)
+                        .Select(e => new
+                        {
+                            name = e.DisplayName,
+                            pattern = e.RoutePattern.RawText,
+                            order = e.Order
+                        })
+                        .ToList()
+                });
+            });
+
             // TODO: I do not want to use explicit implementation types here
             endpoints.MapGrpcService<Services.UserService>();
         });

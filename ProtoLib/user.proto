@@ -41,6 +41,6 @@ message GetCurrentUserResponse {
 // ====== ~~~~~~ ====== ~~~~~~ ======
 
 service UserService {
-  rpc SignIn(SignInRequest) returns (SignInRequest);
+  rpc SignIn(SignInRequest) returns (SignInResponse);
   rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
 }

@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoLib", "ProtoLib\ProtoLib.csproj", "{4C3EDF8C-9182-4B43-9069-A66772E8DA2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{1BA45B1E-332C-42FB-894A-798951AF935B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{F2975530-4517-4975-B0C7-6360D089B98E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{4C3EDF8C-9182-4B43-9069-A66772E8DA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3EDF8C-9182-4B43-9069-A66772E8DA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3EDF8C-9182-4B43-9069-A66772E8DA2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BA45B1E-332C-42FB-894A-798951AF935B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BA45B1E-332C-42FB-894A-798951AF935B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BA45B1E-332C-42FB-894A-798951AF935B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BA45B1E-332C-42FB-894A-798951AF935B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2975530-4517-4975-B0C7-6360D089B98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2975530-4517-4975-B0C7-6360D089B98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2975530-4517-4975-B0C7-6360D089B98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2975530-4517-4975-B0C7-6360D089B98E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

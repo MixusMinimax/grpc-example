@@ -1,6 +1,8 @@
 using Grpc.Core;
-using Proto;
+using Mapster;
 using Proto.User;
+using UserService.Models;
+using User = UserService.Models.User;
 
 namespace UserService.Services;
 
@@ -8,28 +10,24 @@ public class UserService : Proto.User.UserService.UserServiceBase
 {
     public override Task<SignInResponse> SignIn(SignInRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new SignInResponse
-        {
-            Jwt = "jwt"
-        });
+        return Task.FromResult(new SignInResponse { Jwt = "jwt" });
     }
 
     public override Task<GetCurrentUserResponse> GetCurrentUser(GetCurrentUserRequest request,
         ServerCallContext context)
     {
-        return Task.FromResult(new GetCurrentUserResponse
+        var user = new User
         {
-            User = new User
+            Id = Guid.NewGuid(),
+            Username = "maxi.barmetler@gmail.com",
+            Name = new HumanName
             {
-                Id = Guid.NewGuid().ToString(),
-                Username = "maxi.barmetler@gmail.com",
-                Name = new HumanName
-                {
-                    FirstName = "Maximilian",
-                    MiddleNames = { "Erich" },
-                    LastName = "Barmetler"
-                }
+                FirstName = "Maximilian", LastName = "Barmetler", MiddleNames = new List<string> { "Erich" }
             }
-        });
+        };
+
+        var userMsg = user.Adapt<Proto.User.User>();
+
+        return Task.FromResult(new GetCurrentUserResponse { User = userMsg });
     }
 }

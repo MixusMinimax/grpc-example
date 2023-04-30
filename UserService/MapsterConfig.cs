@@ -15,6 +15,10 @@ public static class MapsterConfig
 
         TypeAdapterConfig<string, Guid>.NewConfig().MapWith(src => Guid.Parse(src));
 
+        TypeAdapterConfig<Models.User, Proto.User.User>.NewConfig().IgnoreNullValues(true);
+
+        TypeAdapterConfig<Models.HumanName, Proto.HumanName>.NewConfig().IgnoreNullValues(true);
+
         TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
     }
 }

@@ -8,28 +8,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj" />
-      <ProjectReference Include="..\ProtoLib\ProtoLib.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\ProtoLib\ProtoLib.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Grpc.AspNetCore" Version="2.53.0-pre1" />
-      <PackageReference Include="Lombok.NET" Version="2.1.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.3.23174.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0-preview.3.23174.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.3.23174.2">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.3.23174.8" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.3" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.53.0-pre1"/>
+        <PackageReference Include="Lombok.NET" Version="2.1.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.3.23174.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0-preview.3.23174.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.3.23174.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.3.23174.8"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="appsettings.json" />
-      <Content Include="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <None Remove="appsettings.json"/>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

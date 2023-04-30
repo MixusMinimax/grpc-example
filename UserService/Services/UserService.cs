@@ -14,7 +14,8 @@ public class UserService : Proto.User.UserService.UserServiceBase
         });
     }
 
-    public override Task<GetCurrentUserResponse> GetCurrentUser(GetCurrentUserRequest request, ServerCallContext context)
+    public override Task<GetCurrentUserResponse> GetCurrentUser(GetCurrentUserRequest request,
+        ServerCallContext context)
     {
         return Task.FromResult(new GetCurrentUserResponse
         {

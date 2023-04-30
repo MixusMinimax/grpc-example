@@ -20,6 +20,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.RegisterMapsterConfiguration();
         services.AddGrpc();
         services.AddDbContextPool<UserContext>(options =>
             options.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));

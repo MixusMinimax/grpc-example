@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace UserService;
 
@@ -21,6 +23,27 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.RegisterMapsterConfiguration();
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Configuration["JwtSettings:Issuer"],
+                    ValidAudiences = Configuration.GetSection("JwtSettings:ValidAudiences").Get<string[]?>(),
+                    IssuerSigningKey =
+                        new JsonWebKey(File.ReadAllText(Configuration["JwtSettings:PublicKeyPath"]!)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+        services.AddAuthorization();
         services.AddGrpc();
         services.AddDbContextPool<UserContext>(options =>
             options.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
@@ -34,6 +57,8 @@ public class Startup
         }
 
         app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

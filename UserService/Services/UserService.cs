@@ -1,5 +1,6 @@
 using Grpc.Core;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Proto.User;
 using UserService.Models;
 using User = UserService.Models.User;
@@ -13,6 +14,7 @@ public class UserService : Proto.User.UserService.UserServiceBase
         return Task.FromResult(new SignInResponse { Jwt = "jwt" });
     }
 
+    [Authorize]
     public override Task<GetCurrentUserResponse> GetCurrentUser(GetCurrentUserRequest request,
         ServerCallContext context)
     {

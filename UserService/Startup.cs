@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,7 +79,12 @@ public class Startup
             });
 
             // TODO: I do not want to use explicit implementation types here
-            endpoints.MapGrpcService<Services.UserService>();
+            var userServiceType = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic)
+                .SelectMany(a => a.GetTypes())
+                .FirstOrDefault(t => t.IsSubclassOf(typeof(Proto.User.UserService.UserServiceBase)));
+            typeof(GrpcEndpointRouteBuilderExtensions).GetMethod("MapGrpcService")!.MakeGenericMethod(userServiceType!)
+                .Invoke(null, new object[] { endpoints });
         });
     }
 }

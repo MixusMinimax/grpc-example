@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Grpc.Core;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using User = UserService.Models.User;
 
 namespace UserService.Services;
 
+[GrpcService]
 public class UserService : Proto.User.UserService.UserServiceBase
 {
     public override Task<SignInResponse> SignIn(SignInRequest request, ServerCallContext context)

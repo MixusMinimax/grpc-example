@@ -1,4 +1,6 @@
 using System.Reflection;
+using Common.Attributes;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,13 +80,14 @@ public class Startup
                 });
             });
 
-            // TODO: I do not want to use explicit implementation types here
-            var userServiceType = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => !a.IsDynamic)
-                .SelectMany(a => a.GetTypes())
-                .FirstOrDefault(t => t.IsSubclassOf(typeof(Proto.User.UserService.UserServiceBase)));
-            typeof(GrpcEndpointRouteBuilderExtensions).GetMethod("MapGrpcService")!.MakeGenericMethod(userServiceType!)
-                .Invoke(null, new object[] { endpoints });
+            foreach (var serviceType in AppDomain.CurrentDomain.GetAssemblies()
+                         .Where(a => !a.IsDynamic)
+                         .SelectMany(a => a.GetTypes())
+                         .Where(t => t.GetCustomAttributes(typeof(GrpcServiceAttribute)).Count() != 0))
+            {
+                typeof(GrpcEndpointRouteBuilderExtensions).GetMethod("MapGrpcService")!.MakeGenericMethod(serviceType)
+                    .Invoke(null, new object[] { endpoints });
+            }
         });
     }
 }

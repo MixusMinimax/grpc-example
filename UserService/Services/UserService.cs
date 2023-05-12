@@ -1,7 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Common.Attributes;
 using Grpc.Core;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Net.Http.Headers;
 using Proto.User;
 using UserService.Models;
 using User = UserService.Models.User;
@@ -11,9 +14,21 @@ namespace UserService.Services;
 [GrpcService]
 public class UserService : Proto.User.UserService.UserServiceBase
 {
-    public override Task<SignInResponse> SignIn(SignInRequest request, ServerCallContext context)
+    private readonly IJwtProvider _jwtProvider;
+
+    public UserService(IJwtProvider jwtProvider)
     {
-        return Task.FromResult(new SignInResponse { Jwt = "jwt" });
+        _jwtProvider = jwtProvider;
+    }
+
+    public override async Task<SignInResponse> SignIn(SignInRequest request, ServerCallContext context)
+    {
+        var jwt = await _jwtProvider.GenerateJwtForUserAsync(new User
+        {
+            Username = "maxi.barmetler@gmail.com"
+        });
+        var jwtString = new JwtSecurityTokenHandler().WriteToken(jwt);
+        return new SignInResponse { Jwt = jwtString };
     }
 
     [Authorize]

@@ -1,5 +1,6 @@
 using System.Reflection;
 using Common.Attributes;
+using Common.Extensions;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddServices(AppDomain.CurrentDomain.GetAssemblies());
         services.RegisterMapsterConfiguration();
         services.AddAuthentication(options =>
             {

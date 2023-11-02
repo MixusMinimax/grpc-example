@@ -36,7 +36,7 @@ public class UserService : Proto.User.UserService.UserServiceBase
         ServerCallContext context)
     {
         var username = context.GetHttpContext().User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+
         var user = new User
         {
             Id = Guid.NewGuid(),

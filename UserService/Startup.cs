@@ -12,6 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Crypto.Parameters;
+using ScottBrady.IdentityModel.Crypto;
+using ScottBrady.IdentityModel.Tokens;
 
 namespace UserService;
 
@@ -28,20 +31,27 @@ public class Startup
     {
         services.AddServices(AppDomain.CurrentDomain.GetAssemblies());
         services.RegisterMapsterConfiguration();
-        services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+        services
+            .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
             .AddJwtBearer(options =>
             {
+                var jsonWebKey = new JsonWebKey(File.ReadAllText(Configuration["JwtSettings:PublicKeyPath"]!));
+                var eddsaParams = new EdDsaParameters(jsonWebKey.Crv)
+                {
+                    X = Base64UrlEncoder.DecodeBytes(jsonWebKey.X)
+                };
+                var eddsa = EdDsa.Create(eddsaParams);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = Configuration["JwtSettings:Issuer"],
                     ValidAudiences = Configuration.GetSection("JwtSettings:ValidAudiences").Get<string[]?>(),
-                    IssuerSigningKey =
-                        new JsonWebKey(File.ReadAllText(Configuration["JwtSettings:PublicKeyPath"]!)),
+                    IssuerSigningKey = new EdDsaSecurityKey(eddsa),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
